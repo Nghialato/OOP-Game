@@ -1,5 +1,7 @@
 package main;
 
+import entity.Entity;
+
 public class CollisionChecker {
 
     GamePanel gp;
@@ -8,7 +10,7 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-    public void CheckTile(){
+    public void CheckTile(Entity entity){
 
     }
 

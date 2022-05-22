@@ -12,7 +12,8 @@ public class Player extends Entity{
 
     GamePanel gp;
     KeyHandler keyH;
-    int screenX, screenY;
+    public int screenX;
+    public int screenY;
 
     public Player (GamePanel gp, KeyHandler keyH){
         this.gp = gp;
@@ -32,8 +33,8 @@ public class Player extends Entity{
         speed = 4;
         direction = "right";
         bool = 1;
+        right = new BufferedImage[10];
     }
-
     public void getPlayerImage(){
         try {
             for(int i = 0; i < 5; i++){
@@ -43,6 +44,7 @@ public class Player extends Entity{
             e.printStackTrace();
         }
     }
+
 
     public void update(){
         if(keyH.upPressed){
@@ -56,7 +58,7 @@ public class Player extends Entity{
         if(keyH.leftPressed){
             direction = "left";
             if(bool == 1){
-                worldX += 25 * gp.scale;
+                screenX += 25 * gp.scale;
                 bool--;
             }
             worldX-= speed;
@@ -64,7 +66,7 @@ public class Player extends Entity{
         if (keyH.rightPressed){
             direction = "right";
             if(bool == 0){
-                worldX-= 25 * gp.scale;
+                screenX-= 25 * gp.scale;
                 bool ++;
             }
             worldX+= speed;
@@ -85,16 +87,19 @@ public class Player extends Entity{
             }
             spriteCounter = 0;
         }
-
     }
 
     public void draw(Graphics2D g){
 
         BufferedImage image = right[spriteNum];
         switch (direction) {
-            case "left" -> flip = -1;
-            case "right" -> flip = 1;
+            case "left":
+                flip = -1;
+                break;
+            case "right":
+                flip = 1;
+                break;
         }
-        g.drawImage(image, worldX, worldY, flip * 25 * gp.scale, 28*gp.scale, null);
+        g.drawImage(image, screenX, screenY, 25 *flip * gp.scale, 28*gp.scale, null);
     }
 }

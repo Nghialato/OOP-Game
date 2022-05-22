@@ -7,7 +7,7 @@ public class Entity {
     public int worldX, worldY;
     public int speed, flip, bool;
 
-    public BufferedImage[] right = {null, null, null, null, null};
+    public BufferedImage[] right;
     public String direction;
 
     public int spriteCounter = 0;
@@ -15,5 +15,7 @@ public class Entity {
 
     public Rectangle solidArea;
     public boolean collision = false;
+
+
 
 }
