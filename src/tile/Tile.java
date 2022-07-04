@@ -4,7 +4,8 @@ import java.awt.image.BufferedImage;
 import java.nio.Buffer;
 
 public class Tile {
-    public BufferedImage image;
-    public boolean collision = false;
+    protected BufferedImage image3, image2, image1, image;
+    public boolean collision = true;
 
+    protected boolean explosion = false;
 }

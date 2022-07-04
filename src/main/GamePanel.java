@@ -7,11 +7,11 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements  Runnable{
     final int originalTileSize = 16;
-    final int scale = 3;
+    public final int scale = 3;
 
     public int tileSize = originalTileSize * scale;
-    public int maxScreenCol = 16;
-    public int maxScreenRow = 12;
+    public int maxScreenCol = 15;
+    public int maxScreenRow = 15;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
 
@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements  Runnable{
 
     int FPS = 60 ;
 
-    TileManager tileM = new TileManager(this);
+    TileManager tileM = new TileManager(this, player);
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -74,7 +74,7 @@ public class GamePanel extends JPanel implements  Runnable{
     }
 
     public void update() {
-        if(keyH.downPressed || keyH.upPressed || keyH.leftPressed || keyH.rightPressed) {
+        if(keyH.spacePressed || keyH.downPressed || keyH.upPressed || keyH.leftPressed || keyH.rightPressed) {
             player.update();
         }
     }

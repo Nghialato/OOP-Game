@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import tile.Bomb;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,17 +14,15 @@ public class Player extends Entity {
 
     GamePanel gp;
     KeyHandler keyH;
-
-    public final int screenX;
-    public final int screenY;
+    private boolean move;
+    Bomb[] bomb;
+    private int bombonmap, maxbomb;
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
 
-        screenX = gp.screenWidth/2 - (gp.tileSize/2);
-        screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
         solidArea = new Rectangle();
         solidArea.x = 8;
@@ -38,10 +37,19 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        worldX = gp.tileSize*23;
-        worldY = gp.tileSize*21;
-        speed = 4;
+        worldX = gp.tileSize*13;
+        worldY = gp.tileSize*13;
+        bombonmap = 0;
+        maxbomb = 4;
+        bomb = new Bomb[maxbomb];
+        for(int i = 0; i < maxbomb; i++){
+            bomb[i] = new Bomb(this, gp);
+            System.out.println("Test collision " + bomb[i].collision);
+            bomb[i].collision = true;
+        }
+        speed = 3;
         direction="down";
+        move = true;
     }
 
     public void getPlayerImage() {
@@ -62,34 +70,41 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (keyH.upPressed == true) {
+//        System.out.println("Space pressed " + keyH.spacePressed);
+        if (keyH.upPressed) {
             direction = "up";
-        } else if (keyH.downPressed == true) {
+            move = true;
+        } else if (keyH.downPressed) {
             direction = "down";
-        } else if (keyH.leftPressed == true) {
+            move = true;
+        } else if (keyH.leftPressed) {
             direction = "left";
-        } else if (keyH.rightPressed == true) {
+            move = true;
+        } else if (keyH.rightPressed) {
             direction = "right";
+            move = true;
+        } else if (keyH.spacePressed && maxbomb > bombonmap){
+            bombonmap++;
+            System.out.println("Bomb on map" + bombonmap);
+            System.out.println("Max bomb "+maxbomb);
+//          System.out.println("Test Space Press");
+            bomb[bombonmap - 1].setWorldX(worldX + gp.tileSize/2);
+            bomb[bombonmap - 1].setWorldY(worldY - gp.tileSize/2);
+            move = false;
         }
+
+        keyH.spacePressed = false;
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
 
-        if(collisionOn == false){
+        if(!collisionOn && !keyH.spacePressed && move){
 
-            switch(direction){
-                case "up":
-                    worldY -= speed;
-                    break;
-                case "down":
-                    worldY += speed;
-                    break;
-                case "left":
-                    worldX -= speed;
-                    break;
-                case "right":
-                    worldX += speed;
-                    break;
+            switch (direction) {
+                case "up" -> worldY -= speed;
+                case "down" -> worldY += speed;
+                case "left" -> worldX -= speed;
+                case "right" -> worldX += speed;
             }
         }
 
@@ -113,35 +128,44 @@ public class Player extends Entity {
         BufferedImage image = null;
 
         switch (direction) {
-            case "up":
-                if(spriteNum ==1 ){
-                image = up1;}
-                if(spriteNum == 2){
+            case "up" -> {
+                if (spriteNum == 1) {
+                    image = up1;
+                }
+                if (spriteNum == 2) {
                     image = up2;
                 }
-                break;
-            case "down":
-                if(spriteNum ==1 ){
-                image = down1;}
-                if(spriteNum == 2){
-                image = down2;
+            }
+            case "down" -> {
+                if (spriteNum == 1) {
+                    image = down1;
                 }
-                break;
-            case "left":
-                if(spriteNum ==1 ){
-                    image = left1;}
-                if(spriteNum == 2){
+                if (spriteNum == 2) {
+                    image = down2;
+                }
+            }
+            case "left" -> {
+                if (spriteNum == 1) {
+                    image = left1;
+                }
+                if (spriteNum == 2) {
                     image = left2;
                 }
-                break;
-            case "right":
-                if(spriteNum ==1 ){
-                    image = right1;}
-                if(spriteNum == 2){
+            }
+            case "right" -> {
+                if (spriteNum == 1) {
+                    image = right1;
+                }
+                if (spriteNum == 2) {
                     image = right2;
                 }
-                break;
+            }
         }
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        if(bombonmap > 0 && bombonmap <= maxbomb){
+            for(int i = 0; i < bombonmap; i++){
+                bomb[i].draw(g2);
+            }
+        }
+        g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
     }
 }
