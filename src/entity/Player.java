@@ -9,14 +9,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.security.Key;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Player extends Entity {
 
     GamePanel gp;
     KeyHandler keyH;
     private boolean move;
-    Bomb[] bomb;
-    private int bombonmap, maxbomb;
+    Queue<Bomb> bombs = new LinkedList<>();
+    private int maxbomb;
 
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -39,14 +42,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         worldX = gp.tileSize*13;
         worldY = gp.tileSize*13;
-        bombonmap = 0;
         maxbomb = 4;
-        bomb = new Bomb[maxbomb];
-        for(int i = 0; i < maxbomb; i++){
-            bomb[i] = new Bomb(this, gp);
-            System.out.println("Test collision " + bomb[i].collision);
-            bomb[i].collision = true;
-        }
         speed = 3;
         direction="down";
         move = true;
@@ -83,13 +79,16 @@ public class Player extends Entity {
         } else if (keyH.rightPressed) {
             direction = "right";
             move = true;
-        } else if (keyH.spacePressed && maxbomb > bombonmap){
-            bombonmap++;
-            System.out.println("Bomb on map" + bombonmap);
+        } else if (keyH.spacePressed && maxbomb > bombs.size()){
+            System.out.println("Bomb on map" + bombs.size());
             System.out.println("Max bomb "+maxbomb);
 //          System.out.println("Test Space Press");
-            bomb[bombonmap - 1].setWorldX(worldX + gp.tileSize/2);
-            bomb[bombonmap - 1].setWorldY(worldY - gp.tileSize/2);
+            Bomb bomb1 = new Bomb(this, gp);
+//            bomb[bombonmap - 1].setWorldX(worldX + gp.tileSize/2);
+//            bomb[bombonmap - 1].setWorldY(worldY - gp.tileSize/2);
+            bomb1.setWorldX(worldX + gp.tileSize/2);
+            bomb1.setWorldY(worldY - gp.tileSize/2);
+            bombs.add(bomb1);
             move = false;
         }
 
@@ -161,9 +160,10 @@ public class Player extends Entity {
                 }
             }
         }
-        if(bombonmap > 0 && bombonmap <= maxbomb){
-            for(int i = 0; i < bombonmap; i++){
-                bomb[i].draw(g2);
+        if(bombs.size() > 0 && bombs.size() <= maxbomb){
+            if(bombs.peek().time > 140) bombs.remove();
+            for (Bomb bomb : bombs) {
+                bomb.draw(g2);
             }
         }
         g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
