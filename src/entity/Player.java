@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import tile.Bomb;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,6 +14,10 @@ public class Player extends Entity {
 
     GamePanel gp;
     KeyHandler keyH;
+    Bomb[] bomb;
+    private int bombonmap, maxbomb;
+    private boolean move;
+
 
 
 
@@ -24,6 +29,8 @@ public class Player extends Entity {
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         solidArea.width = 32;
         solidArea.height = 32;
 
@@ -34,10 +41,19 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        x = 100;
-        y = 100;
-        speed = 4;
+        x = gp.tileSize*13;
+        y = gp.tileSize*13;
+        bombonmap = 0;
+        maxbomb = 4;
+        bomb = new Bomb[maxbomb];
+        for(int i = 0; i < maxbomb; i++){
+            bomb[i] = new Bomb(this, gp);
+            System.out.println("Test collision " + bomb[i].collision);
+            bomb[i].collision = true;
+        }
+        speed = 3;
         direction="down";
+        move = true;
     }
 
     public void getPlayerImage() {
@@ -67,9 +83,28 @@ public class Player extends Entity {
         } else if (keyH.rightPressed == true) {
             direction = "right";
         }
+        else if (keyH.spacePressed && maxbomb > bombonmap){
+        bombonmap++;
+        System.out.println("Bomb on map" + bombonmap);
+        System.out.println("Max bomb "+maxbomb);
+//          System.out.println("Test Space Press");
+        bomb[bombonmap - 1].setWorldX(x + gp.tileSize/2);
+        bomb[bombonmap - 1].setWorldY(y - gp.tileSize/2);
+        move = false;
+        }
+
+        keyH.spacePressed = false;
 
         collisionOn = false;
         gp.cChecker.checkTile(this);
+
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+
+        //check object collision
+        int objIndex = gp.cChecker.checkObject(this, true);
+
+        pickUpObject(objIndex);
 
         if(collisionOn == false){
 
@@ -100,6 +135,35 @@ public class Player extends Entity {
             spriteCounter = 0;
         }
     }
+
+    public void pickUpObject(int i){
+        if(i != 999){
+
+            String objectName = gp.obj[i].name;
+
+            switch (objectName){
+                case "Shoe":
+                    gp.obj[i] = null;
+                    speed += 1 ;
+                    break;
+                case "Door":
+                    if(i == 1) {
+                        x = 120;
+                        y = 630;
+                        break;
+                    }
+                    if(i == 4) {
+                        x = 650;
+                        y = 90;
+                        break;
+                    }
+            }
+
+        }
+
+    }
+
+
 
     public void draw(Graphics2D g2) {
        // g2.setColor(Color.white);
@@ -137,6 +201,11 @@ public class Player extends Entity {
                     image = right2;
                 }
                 break;
+        }
+        if(bombonmap > 0 && bombonmap <= maxbomb){
+            for(int i = 0; i < bombonmap; i++){
+                bomb[i].draw(g2);
+            }
         }
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
     }
