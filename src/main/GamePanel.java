@@ -77,6 +77,7 @@ public class GamePanel extends JPanel implements  Runnable{
         if(keyH.spacePressed || keyH.downPressed || keyH.upPressed || keyH.leftPressed || keyH.rightPressed) {
             player.update();
         }
+        tileM.update();
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -84,7 +85,6 @@ public class GamePanel extends JPanel implements  Runnable{
         Graphics2D g2 = (Graphics2D)g;
         tileM.draw(g2);
         player.draw(g2);
-
         g2.dispose();
 
     }
