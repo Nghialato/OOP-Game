@@ -66,9 +66,10 @@ public class TileManager {
 
                 tile[1] = new Tile();
                 tile[1].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall.png")));
+                tile[1].explosion = false;
 
                 tile[2] = new Tile();
-                tile[2].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/water00.png")));
+                tile[2].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/brick_exploded.png")));
 
                 tile[3] = new Tile();
                 tile[3].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
@@ -96,14 +97,50 @@ public class TileManager {
             if ((player.worldX + gp.tileSize/2)/gp.tileSize != bomb.getWorldX()/ gp.tileSize || (player.worldY - gp.tileSize/2)/gp.tileSize + 1 != bomb.getWorldY()/gp.tileSize){
                 mapTileNum[col][row] = 6;
             }
-            if(bomb.time > 120) {
-                for(int i = 1; i <= 2; i++){
-                    mapTileNum[col + i][row] = 0;
-                    mapTileNum[col - i][row] = 0;
-                    mapTileNum[col][row - i] = 0;
-                    mapTileNum[col][row + i] = 0;
+            if(bomb.time == 119) {
+                for(int i = 1; i <= bomb.bomb_range; i++){
+                    if(row - i >= 0){
+                        if (tile[mapTileNum[col][row - i]].explosion && bomb.bomb_range_top <= bomb.bomb_range)
+                            bomb.bomb_range_top++;
+                        else break;
+                    } else break;
                 }
+                for(int i = 1; i <= bomb.bomb_range; i++){
+                    if(row + i < 14){
+                        if (tile[mapTileNum[col][row + i]].explosion && bomb.bomb_range_bot <= bomb.bomb_range)
+                            bomb.bomb_range_bot++;
+                        else break;
+                    } else break;
+                }
+                for(int i = 1; i <= bomb.bomb_range; i++){
+                    if(col - i >= 0){
+                        if (tile[mapTileNum[col - i][row]].explosion && bomb.bomb_range_left <= bomb.bomb_range)
+                            bomb.bomb_range_left++;
+                        else break;
+                    } else break;
+                }
+                for(int i = 1; i <= bomb.bomb_range; i++){
+                    if(col + i < 14){
+                        if (tile[mapTileNum[col + i][row]].explosion && bomb.bomb_range_right <= bomb.bomb_range)
+                            bomb.bomb_range_right++;
+                        else break;
+                    } else break;
+                }
+            }
+            if(bomb.time > 120) {
                 mapTileNum[col][row] = 0;
+                for(int i = 1; i <= bomb.bomb_range_top; i++){
+                    mapTileNum[col][row-i] = 0;
+                }
+                for(int i = 1; i <= bomb.bomb_range_bot; i++){
+                    mapTileNum[col][row+i] = 0;
+                }
+                for(int i = 1; i <= bomb.bomb_range_left; i++){
+                    mapTileNum[col - i][row] = 0;
+                }
+                for(int i = 1; i <= bomb.bomb_range_right; i++){
+                    mapTileNum[col + i][row] = 0;
+                }
             }
 //            System.out.println("Check maptilenum" + mapTileNum[col][row]);
         }
