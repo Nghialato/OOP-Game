@@ -1,11 +1,11 @@
 package tile;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 
 public class Tile {
-    protected BufferedImage image_center, image2, image1, image;
-    public boolean collision = true;
-    protected int explosion = 0;
+    protected BufferedImage image, image1, image2, image3;
+    public boolean collision = false;
+
+    protected boolean explosion = false;
+
 }
