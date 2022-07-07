@@ -67,7 +67,6 @@ public class Bomb extends Tile {
                 if (bombnum == 0) {
                     bombnum = 1;
                     bomb = image1;
-
                 } else if (bombnum == 1) {
                     bombnum = 2;
                     bomb = image2;

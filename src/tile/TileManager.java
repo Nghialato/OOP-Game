@@ -66,10 +66,11 @@ public class TileManager {
 
                 tile[1] = new Tile();
                 tile[1].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/wall.png")));
-                tile[1].explosion = false;
+                tile[1].explosion = 2;
 
                 tile[2] = new Tile();
                 tile[2].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/brick_exploded.png")));
+                tile[2].explosion = 1;
 
                 tile[3] = new Tile();
                 tile[3].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
@@ -100,30 +101,46 @@ public class TileManager {
             if(bomb.time == 119) {
                 for(int i = 1; i <= bomb.bomb_range; i++){
                     if(row - i >= 0){
-                        if (tile[mapTileNum[col][row - i]].explosion && bomb.bomb_range_top <= bomb.bomb_range)
+                        if (tile[mapTileNum[col][row - i]].explosion == 1 && bomb.bomb_range_top <= bomb.bomb_range) {
                             bomb.bomb_range_top++;
-                        else break;
+                            break;
+                        }
+                     else if(tile[mapTileNum[col][row - i]].explosion == 0 && bomb.bomb_range_top <= bomb.bomb_range){
+                        bomb.bomb_range_top++;
                     } else break;
+                }
                 }
                 for(int i = 1; i <= bomb.bomb_range; i++){
                     if(row + i < 14){
-                        if (tile[mapTileNum[col][row + i]].explosion && bomb.bomb_range_bot <= bomb.bomb_range)
+                        if (tile[mapTileNum[col][row + i]].explosion == 1 && bomb.bomb_range_bot <= bomb.bomb_range) {
                             bomb.bomb_range_bot++;
-                        else break;
-                    } else break;
+                            break;
+                        }
+                        else if(tile[mapTileNum[col][row + i]].explosion == 0 && bomb.bomb_range_bot <= bomb.bomb_range){
+                            bomb.bomb_range_bot++;
+                        } else break;
+                }
                 }
                 for(int i = 1; i <= bomb.bomb_range; i++){
                     if(col - i >= 0){
-                        if (tile[mapTileNum[col - i][row]].explosion && bomb.bomb_range_left <= bomb.bomb_range)
+                        if (tile[mapTileNum[col - i][row]].explosion == 1 && bomb.bomb_range_left <= bomb.bomb_range) {
                             bomb.bomb_range_left++;
-                        else break;
+                            break;
+                        }
+                        else if(tile[mapTileNum[col - i][row]].explosion == 0 && bomb.bomb_range_left <= bomb.bomb_range){
+                            bomb.bomb_range_left++;
+                        } else break;
                     } else break;
                 }
                 for(int i = 1; i <= bomb.bomb_range; i++){
                     if(col + i < 14){
-                        if (tile[mapTileNum[col + i][row]].explosion && bomb.bomb_range_right <= bomb.bomb_range)
+                        if (tile[mapTileNum[col + i][row]].explosion == 1 && bomb.bomb_range_right <= bomb.bomb_range) {
                             bomb.bomb_range_right++;
-                        else break;
+                            break;
+                        }
+                        else if(tile[mapTileNum[col + i][row]].explosion == 0 && bomb.bomb_range_right <= bomb.bomb_range){
+                            bomb.bomb_range_right++;
+                        } else break;
                     } else break;
                 }
             }
