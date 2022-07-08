@@ -3,9 +3,10 @@ package tile;
 import java.awt.image.BufferedImage;
 
 public class Tile {
-    protected BufferedImage image, image1, image2, image3;
-    public boolean collision = false;
+    protected BufferedImage image_center, image2, image1, image;
+    public boolean collision = true;
 
-    protected boolean explosion = false;
+    protected boolean explosion = true;
+
 
 }

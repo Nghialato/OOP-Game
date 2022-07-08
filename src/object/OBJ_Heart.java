@@ -1,7 +1,6 @@
 package object;
 
 import javax.imageio.ImageIO;
-import main.GamePanel;
 import java.io.IOException;
 
 public class OBJ_Heart extends SuperObject{

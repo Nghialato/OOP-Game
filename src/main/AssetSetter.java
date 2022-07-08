@@ -14,23 +14,23 @@ public class AssetSetter {
 
     public void setObject(){
         gp.obj[0] = new OBJ_Shoe();
-        gp.obj[0].x = 200;
-        gp.obj[0].y = 200;
+        gp.obj[0].worldX = gp.tileSize;
+        gp.obj[0].worldY = gp.tileSize;
 
         gp.obj[1] = new OBJ_Door();
-        gp.obj[1].x = 620;
-        gp.obj[1].y = 50;
+        gp.obj[1].worldX = 2*gp.tileSize;
+        gp.obj[1].worldY = 2*gp.tileSize;
 
         gp.obj[2] = new OBJ_Chest();
-        gp.obj[2].x = 150;
-        gp.obj[2].y = 150;
+        gp.obj[2].worldX = 3*gp.tileSize;
+        gp.obj[2].worldY = 3*gp.tileSize;
 
         gp.obj[3] = new OBJ_Heart();
-        gp.obj[3].x = 250;
-        gp.obj[3].y = 250;
+        gp.obj[3].worldX = 4*gp.tileSize;
+        gp.obj[3].worldY = 4*gp.tileSize;
 
         gp.obj[4] = new OBJ_Door();
-        gp.obj[4].x = 50;
-        gp.obj[4].y = 620;
+        gp.obj[4].worldX = 5*gp.tileSize;
+        gp.obj[4].worldY = 5*gp.tileSize;
     }
 }
