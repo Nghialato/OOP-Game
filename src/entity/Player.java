@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.Key;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -25,8 +27,6 @@ public class Player extends Entity {
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
-        solidAreaDefaultX = solidArea.x;
-        solidAreaDefaultY = solidArea.y;
         solidArea.width = 32;
         solidArea.height = 32;
 
@@ -37,18 +37,14 @@ public class Player extends Entity {
     public void setDefaultValues() {
         worldX = gp.tileSize*13;
         worldY = gp.tileSize*13;
+        max_health = 5;
+        current_health = 5;
         maxbomb = 2;
         speed = 3;
-        direction="down";
+        direction= "down";
         move = true;
-
-        maxLife = 3;
-        life = maxLife;
-
-
-        }
-
-    public void getPlayerImage() {
+    }
+    public void getPlayerImage(){
         try {
             up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_up_1.png")));
             up2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_up_2.png")));
@@ -66,7 +62,6 @@ public class Player extends Entity {
     }
 
     public void update() {
-//        System.out.println("Space pressed " + keyH.spacePressed);
         if (keyH.upPressed) {
             direction = "up";
             move = true;
@@ -79,9 +74,10 @@ public class Player extends Entity {
         } else if (keyH.rightPressed) {
             direction = "right";
             move = true;
-        } else if (keyH.spacePressed && maxbomb > bombs.size()){
-            // System.out.println("Bomb on map" + bombs.size());
-            // System.out.println("Max bomb "+maxbomb);
+        }
+        if (keyH.spacePressed && maxbomb > bombs.size()){
+//            System.out.println("Bomb on map " + bombs.size());
+//            System.out.println("Max bomb "+maxbomb);
             Bomb bomb1 = new Bomb(this, gp);
             bomb1.setWorldX(worldX + gp.tileSize/2);
             bomb1.setWorldY(worldY - gp.tileSize/2);
@@ -94,11 +90,7 @@ public class Player extends Entity {
         collisionOn = false;
         gp.cChecker.checkTile(this);
 
-        int objIndex = gp.cChecker.checkObject(this, true);
-
-        pickUpObject(objIndex);
-
-        if(!collisionOn && !keyH.spacePressed && move){
+        if(!collisionOn && move){
 
             switch (direction) {
                 case "up" -> worldY -= speed;
@@ -118,36 +110,9 @@ public class Player extends Entity {
             }
             spriteCounter = 0;
         }
-
-
-        if(life <= 0){
-            gp.gameState = gp.gameOverState;
-        }
-
-    }
-
-    public void pickUpObject(int i){
-        if(i != 999){
-
-            String objectName = gp.obj[i].name;
-
-            switch (objectName){
-                case "Shoe":
-                    gp.obj[i] = null;
-                    speed += 1 ;
-                    break;
-
-            }
-
-        }
-
     }
 
     public void draw(Graphics2D g2) {
-       // g2.setColor(Color.white);
-       // g2.fillRect(x,y,gp.tileSize,gp.tileSize);
-
-
         BufferedImage image = null;
 
         switch (direction) {
@@ -190,6 +155,18 @@ public class Player extends Entity {
                 bomb.draw(g2);
             }
         }
+        update_health();
         g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
+    }
+
+    private void update_health(){
+        for(Bomb bomb : bombs){
+            if(bomb.isExploding()){
+                if (check_in_range(bomb, gp) && bomb.time == 130){
+                    current_health--;
+                }
+            }
+        }
+        System.out.println("Current health " + current_health);
     }
 }

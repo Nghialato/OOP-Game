@@ -14,7 +14,13 @@ public class Bomb extends Tile {
     private int worldY;
     private int spriteBomb;
     private int bombnum = 0;
-    public int bomb_range_left = 0, bomb_range_right = 0, bomb_range_bot = 0, bomb_range_top = 0, bomb_range = 2;
+    private boolean exploding = false;
+
+    public boolean isExploding() {
+        return exploding;
+    }
+
+    public int bomb_range_left = 0, bomb_range_right = 0, bomb_range_bot = 0, bomb_range_top = 0, bomb_range = 1;
     BufferedImage bomb = null;
     BufferedImage [] bomb_explosion_col;
     BufferedImage [] bomb_explosion_row;
@@ -67,7 +73,6 @@ public class Bomb extends Tile {
                 if (bombnum == 0) {
                     bombnum = 1;
                     bomb = image1;
-
                 } else if (bombnum == 1) {
                     bombnum = 2;
                     bomb = image2;
@@ -81,16 +86,17 @@ public class Bomb extends Tile {
         } else explosion(g2);
     }
     private void explosion(Graphics2D g2){
+        exploding = true;
         for(int i = 1; i < bomb_range_top; i++){
             g2.drawImage(bomb_explosion_row[1], worldX, worldY - i*gp.tileSize, gp.tileSize, gp.tileSize, null );
         }
         g2.drawImage(bomb_explosion_row[0], worldX, worldY - bomb_range_top*gp.tileSize, gp.tileSize, gp.tileSize, null );
-        if(bomb_range_bot > 0){
-            for (int i = 1; i < bomb_range_bot; i++) {
-                g2.drawImage(bomb_explosion_row[1], worldX, worldY + i * gp.tileSize, gp.tileSize, gp.tileSize, null);
-            }
-            g2.drawImage(bomb_explosion_row[2], worldX, worldY + bomb_range_bot * gp.tileSize, gp.tileSize, gp.tileSize, null);
+
+        for (int i = 1; i < bomb_range_bot; i++) {
+            g2.drawImage(bomb_explosion_row[1], worldX, worldY + i * gp.tileSize, gp.tileSize, gp.tileSize, null);
         }
+        g2.drawImage(bomb_explosion_row[2], worldX, worldY + bomb_range_bot * gp.tileSize, gp.tileSize, gp.tileSize, null);
+
         for(int i = 1; i < bomb_range_left; i++){
             g2.drawImage(bomb_explosion_col[1], worldX - i*gp.tileSize, worldY, gp.tileSize, gp.tileSize, null );
         }
