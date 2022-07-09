@@ -23,7 +23,7 @@ public class TileManager {
         tile = new Tile[10];
         mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
         getTileImage();
-        loadmap("/maps/map01.txt");
+        loadmap("/maps/map02.txt");
     }
     public  void  loadmap(String filePath){
 
@@ -55,6 +55,13 @@ public class TileManager {
         }catch(Exception e){
             e.printStackTrace();
         }
+        /*for( int j = 0; j< gp.maxScreenRow; j++){
+            for( int i = 0; i< gp.maxScreenCol; i++){
+                if(mapTileNum[i][j]== 9){
+                    mapTileNum[i][j] = 0;
+                }
+            }
+        }*/
     }
 
     public void getTileImage(){
@@ -84,6 +91,9 @@ public class TileManager {
 
             tile[6] = new Tile(); // A tile that likes grass but has collision when the player go out of its col or row
             tile[6].image = tile[0].image;
+
+            tile[9] = new Tile();
+            tile[9] = tile[0];
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -107,9 +117,9 @@ public class TileManager {
                             bomb.bomb_range_top++;
                         } else break;
                     }
-                } // Check bomb_range_top
+                }
                 for(int i = 1; i <= bomb.bomb_range; i++){
-                    if(row + i < 14){
+                    if(row + i < gp.maxScreenRow){
                         if (tile[mapTileNum[col][row + i]].explosion == 1 && bomb.bomb_range_bot <= bomb.bomb_range) {
                             bomb.bomb_range_bot++;
                             break;
@@ -118,7 +128,7 @@ public class TileManager {
                             bomb.bomb_range_bot++;
                         } else break;
                     }
-                } // Check bomb_range_bot
+                }
                 for(int i = 1; i <= bomb.bomb_range; i++){
                     if(col - i >= 0){
                         if (tile[mapTileNum[col - i][row]].explosion == 1 && bomb.bomb_range_left <= bomb.bomb_range) {
@@ -129,9 +139,9 @@ public class TileManager {
                             bomb.bomb_range_left++;
                         } else break;
                     } else break;
-                } // Check bomb_range_left
+                }
                 for(int i = 1; i <= bomb.bomb_range; i++){
-                    if(col + i < 14){
+                    if(col + i < gp.maxScreenCol){
                         if (tile[mapTileNum[col + i][row]].explosion == 1 && bomb.bomb_range_right <= bomb.bomb_range) {
                             bomb.bomb_range_right++;
                             break;
@@ -140,7 +150,7 @@ public class TileManager {
                             bomb.bomb_range_right++;
                         } else break;
                     } else break;
-                } // Check bomb_range_right
+                }
             }
             if(bomb.time > 120) {
                 mapTileNum[col][row] = 0;

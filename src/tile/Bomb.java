@@ -20,7 +20,7 @@ public class Bomb extends Tile {
         return exploding;
     }
 
-    public int bomb_range_left = 0, bomb_range_right = 0, bomb_range_bot = 0, bomb_range_top = 0, bomb_range = 1;
+    public int bomb_range_left = 0, bomb_range_right = 0, bomb_range_bot = 0, bomb_range_top = 0, bomb_range = 2;
     BufferedImage bomb = null;
     BufferedImage [] bomb_explosion_col;
     BufferedImage [] bomb_explosion_row;
