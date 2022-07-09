@@ -7,29 +7,32 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
-    protected int worldX, worldY, max_health, current_health;
+    protected int worldX, worldY;
+    public int max_health, current_health;
     public int getWorldY() {
         return worldY;
     }
     public int getWorldX() {
         return worldX;
     }
-    protected int speed;
+    public int speed;
     public int getSpeed() {
         return speed;
     }
     protected BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    protected String direction;
+    public String direction;
     public String getDirection() {
         return direction;
     }
     protected int spriteCounter = 0;
     protected int spriteNum = 1;
-    protected Rectangle solidArea;
+    public Rectangle solidArea;
+    public int solidAreaDefaultX, solidAreaDefaultY;
     public Rectangle getSolidArea(){
         return solidArea;
     }
     public boolean collisionOn = false;
+
 
     protected boolean check_in_range(Bomb bomb, GamePanel gp) {
         int col1 = worldX + 8;

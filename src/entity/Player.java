@@ -4,15 +4,15 @@ import main.GamePanel;
 import main.KeyHandler;
 import tile.Bomb;
 
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.security.Key;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Random;
 
 public class Player extends Entity {
     GamePanel gp;
@@ -20,6 +20,8 @@ public class Player extends Entity {
     private boolean move;
     public Queue<Bomb> bombs = new LinkedList<>();
     private int maxbomb;
+    private boolean activated = false;
+
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
@@ -27,6 +29,8 @@ public class Player extends Entity {
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         solidArea.width = 32;
         solidArea.height = 32;
 
@@ -34,16 +38,20 @@ public class Player extends Entity {
         getPlayerImage();
     }
 
+
     public void setDefaultValues() {
-        worldX = gp.tileSize*13;
-        worldY = gp.tileSize*13;
+        worldX = gp.tileSize*1;
+        worldY = gp.tileSize*1;
         max_health = 5;
         current_health = 5;
         maxbomb = 2;
         speed = 3;
         direction= "down";
         move = true;
+
     }
+
+
     public void getPlayerImage(){
         try {
             up1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_up_1.png")));
@@ -61,7 +69,15 @@ public class Player extends Entity {
         }
     }
 
+    public void B_activate() {
+        if (worldX > 14*gp.tileSize && worldY > 10*gp.tileSize && activated == false) {
+            Boss.active = true;
+            activated = true;
+        }
+    }
+
     public void update() {
+        B_activate();
         if (keyH.upPressed) {
             direction = "up";
             move = true;
@@ -76,8 +92,6 @@ public class Player extends Entity {
             move = true;
         }
         if (keyH.spacePressed && maxbomb > bombs.size()){
-//            System.out.println("Bomb on map " + bombs.size());
-//            System.out.println("Max bomb "+maxbomb);
             Bomb bomb1 = new Bomb(this, gp);
             bomb1.setWorldX(worldX + gp.tileSize/2);
             bomb1.setWorldY(worldY - gp.tileSize/2);
@@ -88,7 +102,11 @@ public class Player extends Entity {
         keyH.spacePressed = false;
 
         collisionOn = false;
+
         gp.cChecker.checkTile(this);
+
+        int objIndex = gp.cChecker.checkObject(this, true);
+        pickUpObject(objIndex);
 
         if(!collisionOn && move){
 
@@ -110,7 +128,75 @@ public class Player extends Entity {
             }
             spriteCounter = 0;
         }
+
+        if (current_health <= 0) {
+            gp.gameState = gp.gameOverState;
+        }
     }
+
+    public void pickUpObject(int i) {
+        if (i != 999) {
+
+            String objectName = gp.obj[i].get_name();
+
+            switch (objectName) {
+                case "Shoe":
+                    gp.obj[i] = null;
+                    speed += 1;
+                    break;
+
+
+                case "Chest":
+
+                    gp.obj[i] = null;
+
+                    Random rand = new Random();
+                    int object = rand.nextInt(7) + 1;
+                    switch (object) {
+                        case 1:
+                            speed++;
+                            break;
+                        case 2:
+                            current_health++;
+                            break;
+                        case 3:
+                            maxbomb++;
+                            break;
+                        case 4:
+                            maxbomb--;
+                            break;
+                        case 5:
+                            speed--;
+                            break;
+                        case 6:
+                            current_health--;
+                            break;
+
+                    }
+
+                case "Door":
+                    if (i==4){
+                        worldX = gp.obj[1].worldX;
+                        worldY = gp.obj[1].worldY + gp.tileSize;
+                    }
+                    if (i==1){
+                        worldX = gp.obj[4].worldX + gp.tileSize;
+                        worldY = gp.obj[4].worldY;
+                    }
+                case "Bomb":
+                    gp.obj[i] = null;
+                    maxbomb += 1;
+                    break;
+                case "Heart":
+                    gp.obj[i] = null;
+                    current_health += 1;
+                    break;
+
+            }
+
+        }
+    }
+
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
@@ -167,6 +253,5 @@ public class Player extends Entity {
                 }
             }
         }
-        System.out.println("Current health " + current_health);
     }
 }
