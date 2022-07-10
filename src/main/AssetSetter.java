@@ -3,12 +3,10 @@ package main;
 import object.*;
 
 public class AssetSetter {
-
     GamePanel gp;
     public AssetSetter(GamePanel gp){
         this.gp =gp;
     }
-
     public void setObject(){
         gp.obj[0] = new OBJ_Shoe();
         gp.obj[0].worldX = 9*gp.tileSize;
@@ -16,7 +14,7 @@ public class AssetSetter {
 
         gp.obj[1] = new OBJ_Door();
         gp.obj[1].worldX = 18*gp.tileSize;
-        gp.obj[1].worldY = 1*gp.tileSize;
+        gp.obj[1].worldY = gp.tileSize;
 
         gp.obj[2] = new OBJ_Chest();
         gp.obj[2].worldX = 8*gp.tileSize;
@@ -27,7 +25,7 @@ public class AssetSetter {
         gp.obj[3].worldY = 5*gp.tileSize;
 
         gp.obj[4] = new OBJ_Door();
-        gp.obj[4].worldX = 1*gp.tileSize;
+        gp.obj[4].worldX = gp.tileSize;
         gp.obj[4].worldY = 14*gp.tileSize;
 
         /*gp.obj[5] = new OBJ_Key();

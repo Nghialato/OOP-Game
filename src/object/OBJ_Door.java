@@ -13,6 +13,5 @@ public class OBJ_Door extends SuperObject {
             e.printStackTrace();
         }
         collision = true;
-
     }
 }

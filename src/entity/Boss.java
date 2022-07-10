@@ -137,49 +137,56 @@ public class Boss extends Entity {
         }
     }
 
-    /*boolean moveable () {
+    boolean moveable () {
         boolean res = true;
+        int LeftWorldX = worldX + solidArea.x;
+        int RightWorldX = worldX + solidArea.x + solidArea.width;
+        int TopWorldY = worldY + solidArea.y;
+        int BottomWorldY = worldY + solidArea.y + solidArea.height;
+
+        int LeftCol = LeftWorldX / gp.tileSize;
+        int RightCol = RightWorldX / gp.tileSize;
+        int TopRow = TopWorldY / gp.tileSize;
+        int BottomRow = BottomWorldY / gp.tileSize;
 
         int tileNum1, tileNum2;
 
-        switch(direction){
-            case "up":
-                TopRow = (TopWorldY - speed)/gp.tileSize;
+        switch (direction) {
+            case "up" -> {
+                TopRow = (TopWorldY - speed) / gp.tileSize;
                 tileNum1 = curMap[LeftCol][TopRow];
                 tileNum2 = curMap[RightCol][TopRow];
-                if(tileNum1 >= 1 || tileNum2 >= 1){
+                if (tileNum1 >= 1 || tileNum2 >= 1) {
                     res = false;
                 }
-                break;
-
-            case "down":
-                BottomRow = (BottomWorldY + speed)/gp.tileSize;
+            }
+            case "down" -> {
+                BottomRow = (BottomWorldY + speed) / gp.tileSize;
                 tileNum1 = curMap[LeftCol][BottomRow];
                 tileNum2 = curMap[RightCol][BottomRow];
-                if(tileNum1 >= 1 || tileNum2 >= 1){
+                if (tileNum1 >= 1 || tileNum2 >= 1) {
                     res = false;
                 }
-                break;
-
-            case "left":
-                LeftCol = (LeftWorldX - speed)/gp.tileSize;
+            }
+            case "left" -> {
+                LeftCol = (LeftWorldX - speed) / gp.tileSize;
                 tileNum1 = curMap[LeftCol][TopRow];
                 tileNum2 = curMap[LeftCol][BottomRow];
-                if(tileNum1 >= 1 || tileNum2 >= 1){
+                if (tileNum1 >= 1 || tileNum2 >= 1) {
                     res = false;
                 }
-                break;
-            case "right":
-                RightCol = (RightWorldX + speed)/gp.tileSize;
+            }
+            case "right" -> {
+                RightCol = (RightWorldX + speed) / gp.tileSize;
                 tileNum1 = curMap[RightCol][TopRow];
                 tileNum2 = curMap[RightCol][BottomRow];
-                if(tileNum1 >= 1 || tileNum2 >= 1){
+                if (tileNum1 >= 1 || tileNum2 >= 1) {
                     res = false;
                 }
-                break;
+            }
         }
         return res;
-    }*/
+    }
 
     public void update() {
         int leftWorldX = worldX + solidArea.x;
@@ -256,7 +263,7 @@ public class Boss extends Entity {
         }
 
         if (curMap[leftCol][topRow] == 0 && curMap[rightCol][bottomRow] == 0) {
-            if(time > 60) {
+            if(time > 30) {
                     Direction = rand.nextInt(4)+1;
                 switch (Direction) {
                     case 1 -> direction = "up";
@@ -265,6 +272,7 @@ public class Boss extends Entity {
                     case 4 -> direction = "right";
                 }
                 time = 0;
+                if(!moveable()) time = 61;
             }
         }
         time++;
@@ -338,7 +346,7 @@ public class Boss extends Entity {
     }
     public void P_bite () {
         if (Math.abs(player.worldX - worldX) < solidArea.width
-        &&  Math.abs(player.worldY - worldY) < solidArea.height && time > 60) player.current_health--;
+        &&  Math.abs(player.worldY - worldY) < solidArea.height) player.current_health--;
     }
 }
 

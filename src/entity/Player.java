@@ -150,9 +150,7 @@ public class Player extends Entity {
                     speed += 1;
                     break;
 
-
                 case "Chest":
-
                     gp.obj[i] = null;
 
                     Random rand = new Random();
@@ -228,7 +226,7 @@ public class Player extends Entity {
             }
         }
         if(bombs.size() > 0 && bombs.size() <= maxbomb){
-            if(bombs.peek().time > 140) bombs.remove();
+            if(bombs.peek().time > 150) bombs.remove();
             for (Bomb bomb : bombs) {
                 bomb.draw(g2);
             }

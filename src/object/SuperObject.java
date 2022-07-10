@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 
 
 public class SuperObject {
-    GamePanel gp;
     protected BufferedImage image;
     public BufferedImage get_image(){ return image;}
 
@@ -24,7 +23,6 @@ public class SuperObject {
     public Rectangle solidArea = new Rectangle(0,0 , 48, 48);
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
-
     public void draw(Graphics2D g2, GamePanel gp){
         g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
 

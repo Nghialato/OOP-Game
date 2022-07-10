@@ -93,7 +93,7 @@ public class E_Randomly extends Entity {
         } else {
             time = 61;
         }
-        if (delay_bite > 30) {
+        if (delay_bite > 60) {
             P_bite();
             delay_bite = 0;
         } else delay_bite++;
@@ -131,9 +131,11 @@ public class E_Randomly extends Entity {
     }
 
     public void P_bite () {
-        if ((Math.abs(player.worldX - worldX) < 2*solidArea.width
-        &&  Math.abs(player.worldY - worldY) < 2*solidArea.height)) {
-                player.current_health--;
+        if ((Math.abs(player.worldX - worldX) <  3 *solidArea.width/2
+        &&  Math.abs(player.worldY - worldY) < 3 * solidArea.height/2)) {
+            worldX = player.worldX;
+            worldY = player.worldY;
+            player.current_health--;
         }
     }
 }

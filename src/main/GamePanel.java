@@ -75,7 +75,6 @@ public class GamePanel extends JPanel implements  Runnable{
                 }
                 Thread.sleep((long) remainingTime);
                 nextDrawTime +=drawInterval;
-
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -103,7 +102,7 @@ public class GamePanel extends JPanel implements  Runnable{
 
         for (SuperObject superObject : obj) {
             if (superObject != null)
-                superObject.draw(g2, this);
+                superObject.draw(g2,this);
         }
 
         ui.draw(g2);

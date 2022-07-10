@@ -25,7 +25,6 @@ public class Entity {
     }
     protected BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     protected String direction;
-
     protected int Direction;
     public String getDirection() {
         return direction;
