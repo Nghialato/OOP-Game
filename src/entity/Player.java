@@ -47,7 +47,7 @@ public class Player extends Entity {
         worldX = gp.tileSize;
         worldY = gp.tileSize;
         max_health = 5;
-        current_health = 5;
+        current_health = max_health;
         maxbomb = 2;
         speed = 3;
         direction= "down";

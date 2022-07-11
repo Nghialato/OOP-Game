@@ -67,12 +67,13 @@ public class GamePanel extends JPanel implements  Runnable{
 
     public void setUpGame() {
         gameState=playState;
-        /*playMusic(i);*/
+
     }
 
     public void startGameThread(){
         gameThread = new Thread(this);
         gameThread.start();
+        playMusic(3);
 
 
     }

@@ -18,7 +18,7 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
     Font arial_40;
-    BufferedImage image, image2, image3;
+    BufferedImage image, image2, image3, image4, image5, image6, image7;
     KeyHandler keyH;
 
 
@@ -37,13 +37,17 @@ public class UI {
         g2.drawString("x " + gp.player.getCurrent_health(), 74, 65);*/
 
         if(gp.gameState == gp.playState){
+            drawHeart();
             drawPlayerLife();
+            drawShoe();
             drawPlayerSpeed();
+            drawMaxBomb();
             drawPlayerBoom();
         }
         if(gp.gameState == gp.pauseState)
         {
             drawPauseScreen();
+
         }
         if(gp.gameState == gp.gameOverState)
         {   
@@ -58,52 +62,88 @@ public class UI {
 
     }
 
+    public void drawHeart(){
+        int x = gp.tileSize ;
+        int y = gp.tileSize / 8;
+        int i = 0;
+        try {
+            image4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/heart.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        g2.drawImage(image4, x, y,gp.tileSize/(3/2) , gp.tileSize/(3/2), null);
+    }
+
+    public void drawShoe(){
+        int x = gp.tileSize*8 ;
+        int y = gp.tileSize /8;
+        int i = 0;
+        try {
+            image5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/shoe.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        g2.drawImage(image5, x, y,gp.tileSize/(3/2) , gp.tileSize/(3/2), null);
+    }
+
+    public void drawMaxBomb(){
+        int x = gp.tileSize*15 ;
+        int y = gp.tileSize / 8;
+        int i = 0;
+        try {
+            image7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bomb_1.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        g2.drawImage(image7, x, y,gp.tileSize/(3/2) , gp.tileSize/(3/2), null);
+    }
+
 
     public void drawPlayerLife() {
-        int x = gp.tileSize / 2;
+        int x = gp.tileSize * 5/2;
         int y = gp.tileSize / 4;
         int i = 0;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/heart.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bar_health.png")));
         }catch (IOException e){
             e.printStackTrace();
         }
         while (i < gp.player.getCurrent_health()) {
             g2.drawImage(image, x, y, null);
             i++;
-            x+=gp.tileSize/2;
+            x+=gp.tileSize/4;
         }
     }
     public void drawPlayerSpeed() {
-        int x = gp.tileSize / 2;
-        int y = gp.tileSize*7/4;
+        int x = gp.tileSize*8 + gp.tileSize*3/2 ;
+        int y = gp.tileSize / 4;
         int i = 0;
         try {
-            image2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/shoe.png")));
+            image6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bar_speed.png")));
         }catch (IOException e){
             e.printStackTrace();
         }
         while (i < gp.player.getSpeed()) {
-            g2.drawImage(image2, x, y, null);
+            g2.drawImage(image6, x, y, null);
             i++;
-            x+=gp.tileSize/2;
+            x+=gp.tileSize/4;
         }
     }
 
 
     public void drawPlayerBoom() {
-        int x = gp.tileSize / 2;
-        int y = gp.tileSize;
+        int x = gp.tileSize*16+gp.tileSize/2 ;
+        int y = gp.tileSize / 4;
         int i = 0;
         try {
-            image3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bomb.png")));
+            image3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bar_boom.png")));
         }catch (IOException e){
             e.printStackTrace();
         }
-        while (i < gp.player.getSpeed()) {
+        while (i < gp.player.getMaxbomb()) {
             g2.drawImage(image3, x, y, null);
             i++;
-            x+=gp.tileSize/2;
+            x+=gp.tileSize/4;
         }
     }
     public void drawPauseScreen() {
