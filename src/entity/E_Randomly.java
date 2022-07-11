@@ -3,11 +3,9 @@ package entity;
 import main.GamePanel;
 import tile.Bomb;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
+
 import java.util.Random;
 
 public class E_Randomly extends Enemies {

@@ -66,7 +66,6 @@ public class Bomb extends Tile {
             e.printStackTrace();
         }
     }
-
     public void draw(Graphics2D g2){
         time++;
         if (gp.gameState==gp.pauseState || gp.gameState == gp.playerStatus){
@@ -75,7 +74,7 @@ public class Bomb extends Tile {
             g2.drawImage(bomb, worldX, worldY, gp.tileSize, gp.tileSize, null);
         } else {
             spriteBomb++;
-            if(time < 120){
+            if(time < 119){
                 if (spriteBomb > 10) {
                     if (bombnum == 0) {
                         bombnum = 1;

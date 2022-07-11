@@ -15,7 +15,7 @@ public class Sound {
         soundURL[0] = getClass().getResource("/Sound/unlock.wav");
         soundURL[1] = getClass().getResource("/sound/gameover.wav");
         soundURL[2] = getClass().getResource("/sound/powerup.wav");
-        soundURL[3] = getClass().getResource("/sound/music.wav");
+        soundURL[3] = getClass().getResource("/Sound/music.wav");
 
     }
 
@@ -24,7 +24,7 @@ public class Sound {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
-        }catch(Exception e){
+        }catch(Exception ignored){
 
         }
     }

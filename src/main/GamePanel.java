@@ -75,7 +75,6 @@ public class GamePanel extends JPanel implements  Runnable{
         gameThread.start();
         playMusic(3);
 
-
     }
     public void gameOver(){
         if (keyH.rPressed){
