@@ -13,7 +13,9 @@ public abstract class Entity {
     protected int worldX, worldY;
     protected GamePanel gp;
     protected String name;
-    protected int max_health, current_health;
+    protected int max_health;
+    public int current_health;
+
     public int getWorldY() {
         return worldY;
     }

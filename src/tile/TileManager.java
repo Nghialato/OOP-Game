@@ -71,7 +71,7 @@ public class TileManager {
         bomb = new Bomb(player, gp);
         try{
             tile[0] = new Tile();
-            tile[0].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/grass00.png")));
+            tile[0].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/floor_1.png")));
             tile[0].collision = false;
 
             tile[1] = new Tile();
@@ -82,21 +82,18 @@ public class TileManager {
             tile[2].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/brick_exploded.png")));
             tile[2].explosion = 1;
 
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/earth.png")));
-
             tile[4] = new Tile();
-            tile[4].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/tree.png")));
+            tile[4].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/floor_spikes_anim_f2.png")));
 
-            tile[5] = new Tile();
-            tile[5].image =ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/tiles/sand.png")));
-            tile[5].collision = false;
 
             tile[6] = new Tile(); // A tile that likes grass but has collision when the player go out of its col or row
             tile[6].image = tile[0].image;
 
             tile[9] = new Tile();
             tile[9] = tile[0];
+
+
+
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -110,46 +107,46 @@ public class TileManager {
                 mapTileNum[col][row] = 6;
             }
             if(bomb.time == 119) {
-                for(int i = 1; i <= bomb.bomb_range; i++){
+                for(int i = 1; i <= Bomb.bomb_range; i++){
                     if(row - i >= 0){
-                        if (tile[mapTileNum[col][row - i]].explosion == 1 && bomb.bomb_range_top <= bomb.bomb_range) {
+                        if (tile[mapTileNum[col][row - i]].explosion == 1 && bomb.bomb_range_top <= Bomb.bomb_range) {
                             bomb.bomb_range_top++;
                             break;
                         }
-                        else if(tile[mapTileNum[col][row - i]].explosion == 0 && bomb.bomb_range_top <= bomb.bomb_range){
+                        else if(tile[mapTileNum[col][row - i]].explosion == 0 && bomb.bomb_range_top <= Bomb.bomb_range){
                             bomb.bomb_range_top++;
                         } else break;
                     }
                 }
-                for(int i = 1; i <= bomb.bomb_range; i++){
+                for(int i = 1; i <= Bomb.bomb_range; i++){
                     if(row + i < gp.maxScreenRow){
-                        if (tile[mapTileNum[col][row + i]].explosion == 1 && bomb.bomb_range_bot <= bomb.bomb_range) {
+                        if (tile[mapTileNum[col][row + i]].explosion == 1 && bomb.bomb_range_bot <= Bomb.bomb_range) {
                             bomb.bomb_range_bot++;
                             break;
                         }
-                        else if(tile[mapTileNum[col][row + i]].explosion == 0 && bomb.bomb_range_bot <= bomb.bomb_range){
+                        else if(tile[mapTileNum[col][row + i]].explosion == 0 && bomb.bomb_range_bot <= Bomb.bomb_range){
                             bomb.bomb_range_bot++;
                         } else break;
                     }
                 }
-                for(int i = 1; i <= bomb.bomb_range; i++){
+                for(int i = 1; i <= Bomb.bomb_range; i++){
                     if(col - i >= 0){
-                        if (tile[mapTileNum[col - i][row]].explosion == 1 && bomb.bomb_range_left <= bomb.bomb_range) {
+                        if (tile[mapTileNum[col - i][row]].explosion == 1 && bomb.bomb_range_left <= Bomb.bomb_range) {
                             bomb.bomb_range_left++;
                             break;
                         }
-                        else if(tile[mapTileNum[col - i][row]].explosion == 0 && bomb.bomb_range_left <= bomb.bomb_range){
+                        else if(tile[mapTileNum[col - i][row]].explosion == 0 && bomb.bomb_range_left <= Bomb.bomb_range){
                             bomb.bomb_range_left++;
                         } else break;
                     } else break;
                 }
-                for(int i = 1; i <= bomb.bomb_range; i++){
+                for(int i = 1; i <= Bomb.bomb_range; i++){
                     if(col + i < gp.maxScreenCol){
-                        if (tile[mapTileNum[col + i][row]].explosion == 1 && bomb.bomb_range_right <= bomb.bomb_range) {
+                        if (tile[mapTileNum[col + i][row]].explosion == 1 && bomb.bomb_range_right <= Bomb.bomb_range) {
                             bomb.bomb_range_right++;
                             break;
                         }
-                        else if(tile[mapTileNum[col + i][row]].explosion == 0 && bomb.bomb_range_right <= bomb.bomb_range){
+                        else if(tile[mapTileNum[col + i][row]].explosion == 0 && bomb.bomb_range_right <= Bomb.bomb_range){
                             bomb.bomb_range_right++;
                         } else break;
                     } else break;

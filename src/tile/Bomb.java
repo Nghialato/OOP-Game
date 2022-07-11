@@ -20,7 +20,9 @@ public class Bomb extends Tile {
         return exploding;
     }
 
-    public int bomb_range_left = 0, bomb_range_right = 0, bomb_range_bot = 0, bomb_range_top = 0, bomb_range = 2;
+    public int bomb_range_left = 0, bomb_range_right = 0, bomb_range_bot = 0, bomb_range_top = 0;
+    public static int bomb_range = 2;
+
     BufferedImage bomb = null;
     BufferedImage [] bomb_explosion_col;
     BufferedImage [] bomb_explosion_row;
@@ -92,6 +94,7 @@ public class Bomb extends Tile {
         }
     }
     private void explosion(Graphics2D g2){
+
         exploding = true;
         for(int i = 1; i < bomb_range_top; i++){
             g2.drawImage(bomb_explosion_row[1], worldX, worldY - i*gp.tileSize, gp.tileSize, gp.tileSize, null );

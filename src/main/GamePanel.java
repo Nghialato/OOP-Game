@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements  Runnable{
 
     KeyHandler keyH = new KeyHandler(this);
     Menu menu = new Menu(this, keyH);
-    Thread gameThread;
+    /*Thread gameThread;*/
     public CollisionChecker cChecker = new CollisionChecker(this);
     public UI ui = new UI(this);
 
@@ -40,6 +40,8 @@ public class GamePanel extends JPanel implements  Runnable{
 
     int FPS = 60 ;
     TileManager tileM = new TileManager(this, player);
+    Sound sound = new Sound();
+    Thread gameThread;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -59,15 +61,20 @@ public class GamePanel extends JPanel implements  Runnable{
         obj[4] = new SuperObject(1, 14, "door", this);
 
         obj[6] = new SuperObject(14, 10, "bomb", this);
+
+        obj[7] = new SuperObject(12, 10, "bomb_1", this);
     }
 
     public void setUpGame() {
         gameState=playState;
+        /*playMusic(i);*/
     }
 
     public void startGameThread(){
         gameThread = new Thread(this);
-        gameThread.start(); 
+        gameThread.start();
+
+
     }
     public void gameOver(){
         if (keyH.rPressed){
@@ -136,5 +143,18 @@ public class GamePanel extends JPanel implements  Runnable{
             player.draw(g2);
             for(int i=0; i<7; i++) if (e_Randomly[i].getCurrent_health() != 0) e_Randomly[i].draw(g2);} else menu.draw(g2);
             if (keyH.enterPressed && menu.num%2==1) System.exit(0);
+    }
+    public void playMusic(int i){
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+
+    public void stopMusic(){
+        sound.stop();
+    }
+    public void playSE(int i){
+        sound.setFile(i);
+        sound.play();
     }
 }

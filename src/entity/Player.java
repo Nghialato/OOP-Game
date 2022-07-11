@@ -133,6 +133,7 @@ public class Player extends Entity {
                 case "shoe" -> {
                     gp.obj[i] = null;
                     speed += 1;
+                    gp.playSE(2);
                 }
                 case "chest" -> {
                     gp.obj[i] = null;
@@ -149,10 +150,14 @@ public class Player extends Entity {
                         case 4 -> maxbomb--;
                         case 5 -> speed--;
                         case 6 -> current_health--;
+                        case 7 -> Bomb.bomb_range++;
+
                     }
+                    gp.playSE(2);
                 }
                 case "bomb" -> {
                     gp.obj[i] = null;
+                    gp.playSE(2);
                     maxbomb += 1;
                 }
                 case "heart" -> {
@@ -160,6 +165,7 @@ public class Player extends Entity {
                     if(current_health <= max_health - 1){
                         current_health++;
                     }
+                    gp.playSE(2);
                 }
                 case "door" -> {
                     if (i == 4) {
@@ -171,6 +177,13 @@ public class Player extends Entity {
                         worldY = gp.obj[4].getWorldY();
                     }
                 }
+                case "bomb_1" -> {
+
+                    gp.obj[i] = null;
+                    gp.playSE(2);
+                    Bomb.bomb_range++;
+
+                    }
             }
 
         }

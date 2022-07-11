@@ -4,15 +4,21 @@ import tile.Bomb;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
+
+import main.Sound;
 
 import entity.Player;
+
+import javax.imageio.ImageIO;
 
 
 public class UI {
     GamePanel gp;
     Graphics2D g2;
     Font arial_40;
-    BufferedImage heartImage;
+    BufferedImage image, image2, image3;
     KeyHandler keyH;
 
 
@@ -31,7 +37,9 @@ public class UI {
         g2.drawString("x " + gp.player.getCurrent_health(), 74, 65);*/
 
         if(gp.gameState == gp.playState){
-
+            drawPlayerLife();
+            drawPlayerSpeed();
+            drawPlayerBoom();
         }
         if(gp.gameState == gp.pauseState)
         {
@@ -50,7 +58,56 @@ public class UI {
 
     }
 
+
+    public void drawPlayerLife() {
+        int x = gp.tileSize / 2;
+        int y = gp.tileSize / 4;
+        int i = 0;
+        try {
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/heart.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        while (i < gp.player.getCurrent_health()) {
+            g2.drawImage(image, x, y, null);
+            i++;
+            x+=gp.tileSize/2;
+        }
+    }
+    public void drawPlayerSpeed() {
+        int x = gp.tileSize / 2;
+        int y = gp.tileSize*7/4;
+        int i = 0;
+        try {
+            image2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/shoe.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        while (i < gp.player.getSpeed()) {
+            g2.drawImage(image2, x, y, null);
+            i++;
+            x+=gp.tileSize/2;
+        }
+    }
+
+
+    public void drawPlayerBoom() {
+        int x = gp.tileSize / 2;
+        int y = gp.tileSize;
+        int i = 0;
+        try {
+            image3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bomb.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        while (i < gp.player.getSpeed()) {
+            g2.drawImage(image3, x, y, null);
+            i++;
+            x+=gp.tileSize/2;
+        }
+    }
     public void drawPauseScreen() {
+        gp.stopMusic();
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN,80));
         String text = "Paused";
         int x = getXforCenteredText(text);
