@@ -2,7 +2,7 @@ package main;
 import entity.Boss;
 import entity.E_Randomly;
 import entity.Player;
-import object.SuperObject;
+import tile.SuperObject;
 import tile.TileManager;
 
 import javax.swing.JPanel;
@@ -21,7 +21,6 @@ public class GamePanel extends JPanel implements  Runnable{
     KeyHandler keyH = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
-    public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
 
     public Player player = new Player(this,keyH);
@@ -50,7 +49,6 @@ public class GamePanel extends JPanel implements  Runnable{
     }
 
     public void setUpGame() {
-        aSetter.setObject();
         gameState=playState;
     }
 

@@ -3,6 +3,7 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import tile.Bomb;
+import tile.SuperObject;
 
 
 import javax.imageio.ImageIO;
@@ -53,6 +54,7 @@ public class Player extends Entity {
         speed = 3;
         direction= "down";
         move = true;
+
 /*
         hasKey = 0;*/
     }
@@ -60,6 +62,7 @@ public class Player extends Entity {
 /*
     protected int hasKey;
 */
+
 
 
     public void getPlayerImage(){
@@ -72,6 +75,7 @@ public class Player extends Entity {
             left2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_left_2.png")));
             right1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_right_1.png")));
             right2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/player/boy_right_2.png")));
+
 
 
         } catch (IOException e) {
@@ -155,12 +159,12 @@ public class Player extends Entity {
             String objectName = gp.obj[i].get_name();
 
             switch (objectName) {
-                case "Shoe":
+                case "shoe":
                     gp.obj[i] = null;
                     speed += 1;
                     break;
 
-                case "Chest":
+                case "chest":
                     gp.obj[i] = null;
 
                     Random rand = new Random();
@@ -176,15 +180,15 @@ public class Player extends Entity {
                     break;
 
 
-                case "Bomb":
+                case "bomb":
                     gp.obj[i] = null;
                     maxbomb += 1;
                     break;
-                case "Heart":
+                case "heart":
                     gp.obj[i] = null;
                     current_health += 1;
                     break;
-                case "Door":
+                case "door":
                     if (i==4){
                         worldX = gp.obj[1].worldX;
                         worldY = gp.obj[1].worldY + gp.tileSize;

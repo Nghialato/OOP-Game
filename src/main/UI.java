@@ -1,7 +1,5 @@
 package main;
 
-import object.OBJ_Heart;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -16,8 +14,8 @@ public class UI {
 
         arial_40 = new Font("Arial", Font.PLAIN, 40);
 
-            OBJ_Heart heart = new OBJ_Heart();
-            heartImage = heart.get_image();
+            /*OBJ_Heart heart = new OBJ_Heart();
+            heartImage = heart.get_image();*/
 
     }
 
