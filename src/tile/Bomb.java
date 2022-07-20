@@ -19,7 +19,7 @@ public class Bomb extends Tile {
     }
 
     public int bomb_range_left = 0, bomb_range_right = 0, bomb_range_bot = 0, bomb_range_top = 0;
-    public static int bomb_range = 2;
+    public static int bomb_range = 1;
     BufferedImage bomb = null;
     BufferedImage [] bomb_explosion_col;
     BufferedImage [] bomb_explosion_row;
@@ -107,4 +107,14 @@ public class Bomb extends Tile {
 
         g2.drawImage(image_center, worldX, worldY, gp.tileSize, gp.tileSize, null);
     }
+
+    public void check_in_range(Bomb bomb){
+        if(!exploding){
+            if((this.worldX >= bomb.worldX - bomb.bomb_range_left*gp.tileSize && this.worldX <= bomb.worldX + bomb.bomb_range_right*gp.tileSize && this.worldY == bomb.worldY) || (this.worldY >= bomb.worldY - bomb.bomb_range_top*gp.tileSize && this.worldY <= bomb.worldY + bomb.bomb_range_bot*gp.tileSize && this.worldX == bomb.worldX)){
+                exploding = true;
+                time = 115;
+            }
+        }
+    }
+
 }

@@ -19,6 +19,7 @@ public class Player extends Entity {
     public Queue<Bomb> bombs = new LinkedList<>();
     private int maxbomb;
 
+    private int count_minus ;
     public int getMaxbomb() {
         return maxbomb;
     }
@@ -30,17 +31,17 @@ public class Player extends Entity {
         this.keyH = keyH;
 
         solidArea = new Rectangle();
-        solidArea.x = 8;
+        solidArea.x = 10;
         solidArea.y = 16;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
-        solidArea.width = 32;
-        solidArea.height = 24;
+        solidArea.width = 28;
+        solidArea.height = 28;
+        activated = false;
 
         setDefaultValues();
         getImage();
     }
-
 
     public void setDefaultValues() {
         name = "player";
@@ -48,10 +49,12 @@ public class Player extends Entity {
         worldY = gp.tileSize;
         max_health = 5;
         current_health = 5;
-        maxbomb = 100;
-        speed = 3;
+        maxbomb = 2;
+        speed = 2;
         direction= "down";
+        minus_health = false;
         move = true;
+        count_minus = 0;
     }
 
     public void B_activate() {
@@ -77,10 +80,14 @@ public class Player extends Entity {
             move = true;
         } else move = false;
         if (keyH.spacePressed && maxbomb > bombs.size()){
+            int count = 0;
             Bomb bomb1 = new Bomb(this, gp);
             bomb1.setWorldX(worldX + gp.tileSize/2);
             bomb1.setWorldY(worldY - gp.tileSize/2);
-            bombs.add(bomb1);
+            for(Bomb bomb : bombs){
+                if(bomb.getWorldX() == bomb1.getWorldX() && bomb.getWorldY() == bomb1.getWorldY()) count++;
+            }
+            if(count == 0) bombs.add(bomb1);
             move = false;
         }
 
@@ -103,12 +110,11 @@ public class Player extends Entity {
             }
         }
 
-        if(move){
+        if(move && !minus_health){
             spriteCounter++;
             if (spriteCounter > 8) {
                 if (spriteNum == 1) {
                     spriteNum = 2;
-
                 } else if (spriteNum == 2) {
                     spriteNum = 3;
                 } else spriteNum = 1;
@@ -119,8 +125,41 @@ public class Player extends Entity {
                 gp.gameState = gp.gameOverState;
             }
         }
+
+        if(minus_health && count_minus < 65){
+            count_minus ++;
+            spriteCounter++;
+            if (spriteCounter > 4) {
+                if (spriteNum == 1) {
+                    spriteNum = 2;
+
+                } else if (spriteNum == 2) {
+                    spriteNum = 3;
+                } else if(spriteNum == 3){
+                    spriteNum = 4;
+                } else spriteNum = 1;
+                spriteCounter = 0;
+            }
+            if (current_health <= 0) {
+                gp.gameState = gp.gameOverState;
+            }
+        }
+
+        if(count_minus > 60) {
+            count_minus = 0;
+            minus_health = false;
+            move = true;
+            spriteCounter = 100;
+        }
+
         for(Bomb bomb : bombs){
-            if(bomb.time == 130) update_health(bomb, gp);
+            if(bomb.time > 125 && bomb.time < 130) {
+                update_health(bomb, gp);
+                bomb.time = 130;
+            }
+            for(Bomb bomb1 : bombs){
+                if(bomb != bomb1) bomb.check_in_range(bomb1);
+            }
         }
     }
 
@@ -133,7 +172,7 @@ public class Player extends Entity {
                 case "shoe" -> {
                     gp.obj[i] = null;
                     speed += 1;
-                    gp.playSE(2);
+                    //gp.playSE(2);
                 }
                 case "chest" -> {
                     gp.obj[i] = null;
@@ -153,11 +192,11 @@ public class Player extends Entity {
                         case 7 -> Bomb.bomb_range++;
 
                     }
-                    gp.playSE(2);
+                    //gp.playSE(2);
                 }
                 case "bomb" -> {
                     gp.obj[i] = null;
-                    gp.playSE(2);
+                    //gp.playSE(2);
                     maxbomb += 1;
                 }
                 case "heart" -> {
@@ -165,7 +204,7 @@ public class Player extends Entity {
                     if(current_health <= max_health - 1){
                         current_health++;
                     }
-                    gp.playSE(2);
+                    //gp.playSE(2);
                 }
                 case "door" -> {
                     if (i == 4) {
@@ -180,9 +219,9 @@ public class Player extends Entity {
                 case "bomb_1" -> {
 
                     gp.obj[i] = null;
-                    gp.playSE(2);
+                    //gp.playSE(2);
                     Bomb.bomb_range++;
-                    }
+                }
             }
         }
     }

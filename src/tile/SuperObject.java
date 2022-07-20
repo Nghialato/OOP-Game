@@ -23,11 +23,11 @@ public class SuperObject extends Tile{
     public boolean isCollision() {
         return collision;
     }
-    public Rectangle solidArea = new Rectangle(0,0 , 48, 48);
+    public Rectangle solidArea = new Rectangle(8,8 , 32, 32);
     public int solidAreaDefaultX = 0;
     public int solidAreaDefaultY = 0;
     public void draw(Graphics2D g2, GamePanel gp){
-        g2.drawImage(image, worldX, worldY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, worldX, worldY, 48, 48, null);
 
     }
     public SuperObject( int worldX, int worldY, String name, GamePanel gp){

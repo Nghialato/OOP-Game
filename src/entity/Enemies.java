@@ -7,7 +7,6 @@ public class Enemies extends Entity{
     protected Player player;
     protected int time = 10000;
 
-    BufferedImage right1, left1, up1, up2;
     protected int delay_bite = 10000;
     protected BufferedImage image;
 
@@ -16,7 +15,10 @@ public class Enemies extends Entity{
     }
 
     protected void P_bite (float range) {
-        if (Math.abs(player.worldX - range * worldX) < solidArea.width
-                &&  Math.abs(player.worldY - range * worldY) < solidArea.height) player.current_health--;
+        if (Math.abs(player.worldX - worldX) < (float) solidArea.width * range
+                &&  Math.abs(player.worldY - worldY) < (float)solidArea.height * range) {
+            player.current_health--;
+            player.minus_health = true;
+        }
     }
 }

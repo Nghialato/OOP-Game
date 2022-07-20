@@ -41,7 +41,7 @@ public class Boss extends Enemies {
         name = "boss";
         worldX = gp.tileSize*(gp.maxScreenCol-2);
         worldY = gp.tileSize*(gp.maxScreenRow-2);
-        current_health = 5;
+        current_health = 10;
         speed = 2;
         Direction = 1;
         direction = "up";
@@ -100,7 +100,7 @@ public class Boss extends Enemies {
                 int x = element.getWorldX()/gp.tileSize;
                 int y = element.getWorldY()/gp.tileSize;
                 curMap[x][y] = 2;
-                int range = element.bomb_range;
+                int range = Bomb.bomb_range;
                 i = 1;
                 while (i <= range) {
                     if (curMap[x+i][y] == 1) break;

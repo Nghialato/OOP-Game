@@ -13,7 +13,7 @@ public class UI {
     GamePanel gp;
     Graphics2D g2;
     Font arial_40;
-    BufferedImage image, image2, image3;
+    BufferedImage image, image3, image4, image5, image6, image7;
     public UI(GamePanel gp){
         this.gp = gp;
         arial_40 = new Font("Arial", Font.PLAIN, 40);
@@ -27,8 +27,11 @@ public class UI {
         g2.drawString("x " + gp.player.getCurrent_health(), 74, 65);*/
 
         if(gp.gameState == gp.playState){
+            drawHeart();
             drawPlayerLife();
+            drawShoe();
             drawPlayerSpeed();
+            drawMaxBomb();
             drawPlayerBoom();
         }
         if(gp.gameState == gp.pauseState)
@@ -38,7 +41,6 @@ public class UI {
         if(gp.gameState == gp.gameOverState)
         {   
             drawOverScreen();
-
         }
         if(gp.gameState == gp.playerStatus)
         {
@@ -49,76 +51,112 @@ public class UI {
     }
 
 
+    public void drawHeart(){
+        int x = gp.tileSize ;
+        int y = gp.tileSize / 8;
+        try {
+            image4 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/heart.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        g2.drawImage(image4, x, y, gp.tileSize, gp.tileSize, null);
+    }
+
+    public void drawShoe(){
+        int x = gp.tileSize*8 ;
+        int y = gp.tileSize /8;
+        try {
+            image5 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/shoe.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        g2.drawImage(image5, x, y, gp.tileSize, gp.tileSize, null);
+    }
+
+    public void drawMaxBomb(){
+        int x = gp.tileSize*15 ;
+        int y = gp.tileSize / 8;
+        try {
+            image7 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bomb.png")));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        g2.drawImage(image7, x, y, gp.tileSize, gp.tileSize, null);
+    }
+
+
     public void drawPlayerLife() {
-        int x = gp.tileSize / 2;
+        int x = gp.tileSize * 5/2;
         int y = gp.tileSize / 4;
         int i = 0;
         try {
-            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/heart.png")));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bar_health.png")));
         }catch (IOException e){
             e.printStackTrace();
         }
         while (i < gp.player.getCurrent_health()) {
             g2.drawImage(image, x, y, null);
             i++;
-            x+=gp.tileSize/2;
+            x+=gp.tileSize/4;
         }
     }
     public void drawPlayerSpeed() {
-        int x = gp.tileSize / 2;
-        int y = gp.tileSize*7/4;
+        int x = gp.tileSize*8 + gp.tileSize*3/2 ;
+        int y = gp.tileSize / 4;
         int i = 0;
         try {
-            image2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/shoe.png")));
+            image6 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bar_speed.png")));
         }catch (IOException e){
             e.printStackTrace();
         }
         while (i < gp.player.getSpeed()) {
-            g2.drawImage(image2, x, y, null);
+            g2.drawImage(image6, x, y, null);
             i++;
-            x+=gp.tileSize/2;
+            x+=gp.tileSize/4;
         }
     }
 
 
     public void drawPlayerBoom() {
-        int x = gp.tileSize / 2;
-        int y = gp.tileSize;
+        int x = gp.tileSize*16+gp.tileSize/2 ;
+        int y = gp.tileSize / 4;
         int i = 0;
         try {
-            image3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bomb.png")));
+            image3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/objects/bar_boom.png")));
         }catch (IOException e){
             e.printStackTrace();
         }
-        while (i < gp.player.getSpeed()) {
+        while (i < gp.player.getMaxbomb()) {
             g2.drawImage(image3, x, y, null);
             i++;
-            x+=gp.tileSize/2;
+            x+=gp.tileSize/4;
         }
     }
     public void drawPauseScreen() {
-        gp.stopMusic();
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,80));
+        g2.setFont(new Font("Pixeboy", Font.PLAIN, 90));
+        g2.setColor(Color.green);
         String text = "Paused";
         int x = getXforCenteredText(text);
         int y = gp.screenHeight / 2;
-
         g2.drawString(text, x, y);
     }
 
     public void drawOverScreen() {
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,80));
+        g2.setFont(new Font("Pixeboy", Font.PLAIN, 120));
+        g2.setColor(Color.blue);
         String text = "Game Over";
         int x = getXforCenteredText(text);
-        int y = gp.screenHeight / 2;
-
+        int y = (gp.screenHeight / 2)-50;
+        g2.drawString(text, x, y);
+        text = "press R back menu";
+        x = getXforCenteredText(text);
+        y = (gp.screenHeight / 2)+50;
         g2.drawString(text, x, y);
     }
 
     public int getXforCenteredText(String text){
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        int x = gp.screenWidth/2 - length/2;
-        return x;
+        return gp.screenWidth/2 - length/2;
     }
 
     /*public void drawScreen(){
@@ -170,9 +208,6 @@ public class UI {
         value = String.valueOf(gp.player.getSpeed());
         textX = getXforAlignRightText(value,tailX);
         g2.drawString(value, textX, textY);
-        textY += lineHeight;
-
-
     }
 
     public void drawSubWindow(int x, int y, int width, int height){
@@ -191,7 +226,6 @@ public class UI {
 
     public int getXforAlignRightText(String text, int tailX){
         int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        int x = tailX - length;
-        return x;
+        return tailX - length;
     }
 }

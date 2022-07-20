@@ -16,6 +16,8 @@ public abstract class Entity {
     protected int max_health;
     public int current_health;
 
+    protected boolean minus_health = false;
+
     public int getWorldY() {
         return worldY;
     }
@@ -58,6 +60,7 @@ public abstract class Entity {
         if(((Math.abs(col1 - bombx) <= gp.tileSize - 16 && row1 >= bomby - (bomb.bomb_range_top) * gp.tileSize - 24 && row1 <= bomby + (bomb.bomb_range_bot + 1) * gp.tileSize - 8))
                 || ((Math.abs(row1 - bomby) < (gp.tileSize - 12) && col1 >= bombx - (bomb.bomb_range_left) * gp.tileSize - 24 && col1 <= bombx + (bomb.bomb_range_right + 1) * gp.tileSize - 16)) && bomb.isExploding()){
             current_health--;
+            minus_health = true;
         }
     }
     public void getImage(){
@@ -86,6 +89,9 @@ public abstract class Entity {
                 if(spriteNum == 3){
                     image = up[3];
                 }
+                if(spriteNum == 4){
+                    image = null;
+                }
             }
             case "down" -> {
                 if (spriteNum == 1) {
@@ -96,6 +102,9 @@ public abstract class Entity {
                 }
                 if(spriteNum == 3){
                     image = down[3];
+                }
+                if(spriteNum == 4){
+                    image = null;
                 }
             }
             case "left" -> {
@@ -108,6 +117,9 @@ public abstract class Entity {
                 if(spriteNum == 3){
                     image = left[3];
                 }
+                if(spriteNum == 4){
+                    image = null;
+                }
             }
             case "right" -> {
                 if (spriteNum == 1) {
@@ -118,6 +130,9 @@ public abstract class Entity {
                 }
                 if(spriteNum == 3){
                     image = right[3];
+                }
+                if(spriteNum == 4){
+                    image = null;
                 }
             }
         }

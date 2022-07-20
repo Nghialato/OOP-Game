@@ -83,6 +83,7 @@ public class E_Randomly extends Enemies {
             time = 61;
         }
         if (delay_bite > 60) {
+
             P_bite(1.5F);
             delay_bite = 0;
         } else delay_bite++;
